@@ -12,7 +12,9 @@
                      class: "block text-sm font-bold mb-1" %>
         <%= f.text_field :q, value: params[:q],
                           class: "w-full border rounded px-3 py-2",
-                          placeholder: "例：玉造グルメ",
+
+                          placeholder: "例：おにぎり",
+
                           'aria-label': t('views.onsens.index.search') %>
         <p class="text-xs text-gray-600 mt-1">グルメ名や説明文で検索できます</p>
       </div>
