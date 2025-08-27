@@ -10,6 +10,11 @@ class Onsen < ApplicationRecord
   size: { less_than: 5.megabytes },                       # 1枚あたり5MB未満
   limit: { max: 5 }                                     # 最大3枚まで
 
+  # 住所変換するやつ。
+  geocoded_by :address, latitude: :geo_lat, longitude: :geo_lng
+  after_validation :geocode, if: :will_save_change_to_address?
+
+
 
   # @example Onsen.search(q: "玉造", tags: "露天風呂", lat: 35.1, lng: 132.5, radius_km: 10)
   def self.search(params)
