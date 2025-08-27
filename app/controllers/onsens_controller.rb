@@ -18,4 +18,8 @@ class OnsensController < ApplicationController
     def set_onsen
       @onsen = Onsen.find(params[:id])
     end
+
+    def onsen_params
+      params.require(:onsen).permit(:name, :sales_s, :sales_f, :holiday, :other_columns)
+    end
 end
