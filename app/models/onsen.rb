@@ -122,7 +122,12 @@ class Onsen < ApplicationRecord
     now = Time.zone.now
     wday = %w[日 月 火 水 木 金 土][now.wday] # 現在の曜日を取得
     # holidayが空でなく、かつその曜日が含まれていたら休業
+
     return "休業中" if holiday.present? && holiday.include?(wday)
+
+    if sales_s == "" || sales_f == ""
+      return ""
+    end
 
     now_sec   = now.hour * 3600 + now.min * 60
     open_sec  = sales_s.to_time.hour * 3600 + sales_s.to_time.min * 60
