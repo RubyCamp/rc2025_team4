@@ -14,6 +14,8 @@
           <span class="font-medium">タグ:</span> <%= onsen.tags %>
         </div>
       <% end %>
+      <div><%= onsen.sales_s %> ～ <%= onsen.sales_f %></div>
+      <div>営業状況：<%= onsen.open_now %></div>
       <div class="flex items-center">
         <% if onsen.reviews.any? %>
           <%= render partial: "shared/rating_stars", locals: { rating: (onsen.reviews.average(:rating)&.round || 0) } %>

@@ -18,7 +18,7 @@ export default class extends Controller {
     }).addTo(this.map);
 
     const onsenIcon = L.icon({
-      iconUrl: '/onsen.svg',
+      iconUrl: '/onsen.png', // .svg から .png に変更
       iconSize: [32, 32],
       iconAnchor: [16, 32],
     });
