@@ -160,11 +160,7 @@ class Onsen < ApplicationRecord
     wday = %w[日 月 火 水 木 金 土][now.wday] # 現在の曜日を取得
     # holidayが空でなく、かつその曜日が含まれていたら休業
 
-    return "休業中" if holiday.present? && holiday.include?(wday)
-
-    if sales_s == "" || sales_f == ""
-      return ""
-    end
+    return "休業中(定休日)" if holiday.present? && holiday.include?(wday)
 
     now_sec   = now.hour * 3600 + now.min * 60
     open_sec  = sales_s.to_time.hour * 3600 + sales_s.to_time.min * 60
@@ -174,23 +170,23 @@ class Onsen < ApplicationRecord
       close_sec += 24 * 3600
     end
 
-    if open_sec <= now_sec && now_sec <= close_sec
+    if close_sec - now_sec <= 30.minutes && now_sec < close_sec
+      "まもなく閉店 (閉店まであと#{(close_sec - now_sec) / 60}分)"
+
+    elsif open_sec <= now_sec && now_sec <= close_sec
       "営業中"
 
     elsif now_sec < open_sec && open_sec - now_sec <= 30.minutes
       "まもなく開店 (開店まであと#{(open_sec - now_sec) / 60}分)"
 
-    elsif close_sec - now_sec <= 30.minutes && now_sec < close_sec
-      "まもなく閉店 (閉店まであと#{(close_sec - now_sec) / 60}分)"
-
     else
+      sales_s_time = sales_s.to_time
       if now_sec < open_sec
         # 今日の開店前
-        "営業時間外 (開店まであと#{(open_sec - now_sec) / 60}分)"
+        "営業時間外 (#{sales_s_time.strftime('%H:%M')} から開店)"
       else
         # 今日の営業は終了 → 翌日の開店まで待つ
-        minutes_until_tomorrow_open = (24 * 3600 - now_sec) + open_sec
-        "営業時間外 (明日の開店まであと#{minutes_until_tomorrow_open / 3600}時間)"
+        "営業時間外 (明日 #{sales_s_time.strftime('%H:%M')} に開店)"
       end
     end
   end
