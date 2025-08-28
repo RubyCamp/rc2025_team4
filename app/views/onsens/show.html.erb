@@ -17,7 +17,20 @@
         <%= link_to @onsen.url, @onsen.url,  target: "_blank"%>
         <div><%= @onsen.sales_s %> ～ <%= @onsen.sales_f %></div>
         <div>定休日 : <%= @onsen.holiday %></div>
-        <div>営業状況：<%= @onsen.open_now %></div>
+        <div>営業状況：
+          <% case @onsen.status_icon %>
+          <% when "open_soon" %>
+            <span style="color: #00a2ffff;"><%= @onsen.open_now %></span>
+          <% when "open" %>
+            <span style="color: #3fbe69ff;"><%= @onsen.open_now %></span>
+          <% when "close_soon" %>
+            <span style="color: #d1283fff;"><%= @onsen.open_now %></span>
+          <% when "close" %>
+            <span style="color: #4b4b4bff;"><%= @onsen.open_now %></span>
+          <% else %>
+            <span><%= @onsen.open_now %></span>
+          <% end %>
+      </div>
         <% if @onsen.tags.present? %>
           <div class="flex flex-wrap gap-2 mb-4">
             <% @onsen.tags.split(',').each do |tag| %>
