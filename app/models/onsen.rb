@@ -133,6 +133,10 @@ class Onsen < ApplicationRecord
     open_sec  = sales_s.to_time.hour * 3600 + sales_s.to_time.min * 60
     close_sec = sales_f.to_time.hour * 3600 + sales_f.to_time.min * 60
 
+    if open_sec > close_sec
+      close_sec += 24 * 3600
+    end
+
     (open_sec <= now_sec && now_sec <= close_sec) ? "営業中" : "営業時間外"
   end
 end
