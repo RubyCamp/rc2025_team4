@@ -50,6 +50,39 @@ class Onsen < ApplicationRecord
     scope.where(tag_query, *tag_values)
   end
 
+  # 価格が0円以上のみ登録可能
+  class Onsen < ApplicationRecord
+    has_many_attached :images
+    has_many :reviews
+
+    # -----------------------------
+    # ここから追加
+    # 料金の整数化（空欄は nil に）
+    before_validation :normalize_price
+
+    private
+
+    def normalize_price
+      if price.present? && price.to_s.strip != ""
+        self.price = price.to_i
+      else
+        self.price = nil
+      end
+    end
+    # ここまで追加
+    # -----------------------------
+
+    # バリデーション
+    validates :name, presence: true
+    validates :price,
+      numericality: {
+        only_integer: true,
+        greater_than: 0,
+        message: "は1円以上の整数で入力してください"
+      },
+      allow_nil: true
+  end
+
   # 位置情報検索：二段階フィルタによる距離絞り込み
   #
   # @param scope [ActiveRecord::Relation] 検索対象スコープ
