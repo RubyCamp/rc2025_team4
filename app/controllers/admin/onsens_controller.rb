@@ -1,12 +1,12 @@
 class Admin::OnsensController < ApplicationController
   before_action :set_onsen, only: %i[ show edit update destroy ]
 
-  # GET /onsens or /onsens.json
+  # GET /onsens
   def index
     @onsens = Onsen.all
   end
 
-  # GET /onsens/1 or /onsens/1.json
+  # GET /onsens/1
   def show
   end
 
@@ -19,7 +19,7 @@ class Admin::OnsensController < ApplicationController
   def edit
   end
 
-  # POST /onsens or /onsens.json
+  # POST /onsens
   def create
     @onsen = Onsen.new(onsen_params)
 
@@ -34,10 +34,17 @@ class Admin::OnsensController < ApplicationController
     end
   end
 
-  # PATCH/PUT /onsens/1 or /onsens/1.json
+  # PATCH/PUT /onsens/1
   def update
     respond_to do |format|
-      if @onsen.update(onsen_params)
+      if @onsen.update(onsen_params.except(:remove_image_ids))
+        if onsen_params[:remove_image_ids].present?
+          onsen_params[:remove_image_ids].each do |image_id|
+            image = @onsen.images.find_by(id: image_id)
+            image.purge if image
+          end
+        end
+
         format.html { redirect_to admin_onsen_path(@onsen), notice: "Onsen was successfully updated." }
         format.json { render :show, status: :ok, location: @onsen }
       else
@@ -47,7 +54,8 @@ class Admin::OnsensController < ApplicationController
     end
   end
 
-  # DELETE /onsens/1 or /onsens/1.json
+
+  # DELETE /onsens/1
   def destroy
     @onsen.destroy!
 
@@ -58,13 +66,15 @@ class Admin::OnsensController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_onsen
-      @onsen = Onsen.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def onsen_params
-      params.expect(onsen: [ :name, :geo_lat, :geo_lng, :sales_s, :sales_f, :holiday, :description, :tags, :address, :url, images: [] ])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_onsen
+    @onsen = Onsen.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def onsen_params
+    params.require(:onsen).permit(:name, :geo_lat, :geo_lng, :description, :tags, :url, :price, images: [], remove_image_ids: [])
+  end
+
 end
