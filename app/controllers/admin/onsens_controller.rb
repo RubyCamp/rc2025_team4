@@ -74,7 +74,6 @@ class Admin::OnsensController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def onsen_params
-    params.require(:onsen).permit(:name, :geo_lat, :geo_lng, :description, :tags, :url, :price, images: [], remove_image_ids: [])
+    params.require(:onsen).permit(:name, :geo_lat, :geo_lng, :description, :tags, :url, :sales_s, :sales_f, :holiday, :address, :price, images: [], remove_image_ids: [])
   end
-
 end
