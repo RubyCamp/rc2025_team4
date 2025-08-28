@@ -141,6 +141,14 @@ class Onsen < ApplicationRecord
       close_sec += 24 * 3600
     end
 
-    (open_sec <= now_sec && now_sec <= close_sec) ? "営業中" : "営業時間外"
+    if open_sec <= now_sec && now_sec <= close_sec
+      "営業中"
+    elsif open_sec - now_sec >= 30.minutes
+      "まもなく開店 (開店まであと#{(open_sec - now_sec) / 60}分)"
+    elsif now_sec - close_sec >= 30.minutes
+      "まもなく閉店 (閉店まであと#{(close_sec - now_sec) / 60}分)"
+    else
+      "営業時間外 (開店まであと#{(open_sec - now_sec) / 60}分)"
+    end
   end
 end
