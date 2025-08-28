@@ -17,13 +17,14 @@ export default class extends Controller {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.map);
 
-    const onsenIcon = L.icon({
-      iconUrl: '/onsen.png', // .svg から .png に変更
-      iconSize: [32, 32],
-      iconAnchor: [16, 32],
-    });
-
     this.onsens.forEach(onsen => {
+      // public/ フォルダ配下にある SVG を参照
+      const onsenIcon = L.icon({
+        iconUrl: `/${onsen.status_icon}.svg`,   // public/open.svg など
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+      });
+
       L.marker([onsen.geo_lat, onsen.geo_lng], { icon: onsenIcon })
         .addTo(this.map)
         .bindPopup(onsen.name);
@@ -37,7 +38,7 @@ export default class extends Controller {
     }
   }
 
-  // === プライベートメソッド（内部処理用） ===
+// === プライベートメソッド（内部処理用） ===
 
   /**
    * HTML要素からグルメデータを取得・パース

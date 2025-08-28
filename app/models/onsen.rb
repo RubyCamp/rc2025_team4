@@ -194,4 +194,37 @@ class Onsen < ApplicationRecord
       end
     end
   end
+
+  # 営業状態アイコン
+  def status_icon
+    return "close" if sales_s.blank? || sales_f.blank?
+
+    Time.zone = "Tokyo"
+    now = Time.zone.now
+
+    now_sec   = now.hour * 3600 + now.min * 60
+    open_sec  = sales_s.to_time.hour * 3600 + sales_s.to_time.min * 60
+    close_sec = sales_f.to_time.hour * 3600 + sales_f.to_time.min * 60
+
+    if open_sec > close_sec
+      close_sec += 24 * 3600
+    end
+
+    if open_sec <= now_sec && now_sec <= close_sec
+      if close_sec - now_sec <= 30.minutes
+        "close_soon"
+      else
+        "open"
+      end
+    elsif now_sec < open_sec
+      if open_sec - now_sec <= 30.minutes
+        "open_soon"
+      else
+        "close"
+      end
+    else
+      # 今日の営業終了 → 翌日の開店待ち
+      "close"
+    end
+  end
 end
