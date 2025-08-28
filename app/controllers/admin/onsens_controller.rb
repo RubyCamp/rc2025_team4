@@ -1,4 +1,4 @@
-class Admin::OnsensController < ApplicationController
+class Admin::OnsensController < Admin::AdminController
   before_action :set_onsen, only: %i[ show edit update destroy ]
 
   # GET /onsens
