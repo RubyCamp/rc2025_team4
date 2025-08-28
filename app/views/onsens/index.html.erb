@@ -10,7 +10,7 @@
     <%# 地図エリア（左側・デスクトップ時） %>
     <div class="order-2 lg:order-1">
 <div data-controller="map"
-     data-map-onsens-value="<%= h @onsens.to_json(only: [:id, :name, :geo_lat, :geo_lng]) %>"
+     data-map-onsens-value="<%= @onsens.to_json(only: [:id, :name, :geo_lat, :geo_lng], methods: [:status_icon]) %>"
      class="relative h-96 lg:h-[600px] rounded-lg overflow-hidden shadow-lg">
   <div data-map-target="container" style="z-index:1; width: 100%; height: 100%;"></div>
 
