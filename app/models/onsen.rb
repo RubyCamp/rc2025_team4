@@ -14,6 +14,13 @@ class Onsen < ApplicationRecord
   geocoded_by :address, latitude: :geo_lat, longitude: :geo_lng
   after_validation :geocode, if: :will_save_change_to_address?
 
+  # @example Onsen.within_bounds([sw_lat, sw_lng, ne_lat, ne_lng])
+  scope :within_bounds, ->(bounds) {
+    return all if bounds.blank?
+    sw_lat, sw_lng, ne_lat, ne_lng = bounds.map(&:to_f)
+    where(geo_lat: sw_lat..ne_lat, geo_lng: sw_lng..ne_lng)
+  }
+
 
 
   # @example Onsen.search(q: "玉造", tags: "露天風呂", lat: 35.1, lng: 132.5, radius_km: 10)
