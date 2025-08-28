@@ -13,15 +13,20 @@
     <%= form.label :name, '名称', class: 'block font-semibold mb-1' %>
     <%= form.text_field :name, class: "block shadow-sm rounded-md border px-3 py-2 w-full border-gray-300 focus:outline-blue-600" %>
   </div>
-  <div class="flex flex-col sm:flex-row gap-4">
-    <div class="flex-1">
-      <%= form.label :geo_lat, '緯度', class: 'block font-semibold mb-1' %>
-      <%= form.text_field :geo_lat, class: "block shadow-sm rounded-md border px-3 py-2 w-full border-gray-300 focus:outline-blue-600" %>
-    </div>
-    <div class="flex-1">
-      <%= form.label :geo_lng, '経度', class: 'block font-semibold mb-1' %>
-      <%= form.text_field :geo_lng, class: "block shadow-sm rounded-md border px-3 py-2 w-full border-gray-300 focus:outline-blue-600" %>
-    </div>
+  <%= form.label :address, '住所', class: 'block font-semibold mb-1' %>
+  <%= form.text_field :address, class: "block shadow-sm rounded-md border px-3 py-2 w-full border-gray-300 focus:outline-blue-600" %>
+
+  <div>
+    <%= form.label :sales_s,  '始業時間', class: 'block font-semibold mb-1' %>
+    <%= form.text_field :sales_s, class: "block shadow-sm rouded-md border px-3 py-2 w-full border-gray-300 focus:outline-blue-600" %>
+  </div>
+  <div>
+    <%= form.label :sales_f,  '終業時間', class: 'block font-semibold mb-1' %>
+    <%= form.text_field :sales_f, class: "block shadow-sm rouded-md border px-3 py-2 w-full border-gray-300 focus:outline-blue-600" %>
+  </div>
+  <div>
+    <%= form.label :holiday,  '定休日(カンマ区切り)', class: 'block font-semibold mb-1' %>
+    <%= form.text_field :holiday, class: "block shadow-sm rouded-md border px-3 py-2 w-full border-gray-300 focus:outline-blue-600" %>
   </div>
   <div>
     <%= form.label :description, '説明', class: 'block font-semibold mb-1' %>

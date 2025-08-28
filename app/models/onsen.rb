@@ -10,6 +10,11 @@ class Onsen < ApplicationRecord
   size: { less_than: 5.megabytes },                       # 1枚あたり5MB未満
   limit: { max: 5 }                                     # 最大3枚まで
 
+  # 住所変換するやつ。
+  geocoded_by :address, latitude: :geo_lat, longitude: :geo_lng
+  after_validation :geocode, if: :will_save_change_to_address?
+
+
 
   # @example Onsen.search(q: "玉造", tags: "露天風呂", lat: 35.1, lng: 132.5, radius_km: 10)
   def self.search(params)
@@ -143,5 +148,32 @@ class Onsen < ApplicationRecord
     scope.select do |onsen|
       DistanceCalculatorService.calculate(lat, lng, onsen.geo_lat, onsen.geo_lng) <= radius
     end
+  end
+
+  def open_now
+    if sales_s.blank? || sales_f.blank?
+          return "営業時間不明"
+    end
+
+    Time.zone = "Tokyo"
+    now = Time.zone.now
+    wday = %w[日 月 火 水 木 金 土][now.wday] # 現在の曜日を取得
+    # holidayが空でなく、かつその曜日が含まれていたら休業
+
+    return "休業中" if holiday.present? && holiday.include?(wday)
+
+    if sales_s == "" || sales_f == ""
+      return ""
+    end
+
+    now_sec   = now.hour * 3600 + now.min * 60
+    open_sec  = sales_s.to_time.hour * 3600 + sales_s.to_time.min * 60
+    close_sec = sales_f.to_time.hour * 3600 + sales_f.to_time.min * 60
+
+    if open_sec > close_sec
+      close_sec += 24 * 3600
+    end
+
+    (open_sec <= now_sec && now_sec <= close_sec) ? "営業中" : "営業時間外"
   end
 end

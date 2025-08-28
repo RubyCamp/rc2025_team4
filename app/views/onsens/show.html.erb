@@ -15,6 +15,9 @@
           </span>
         </h1>
         <%= link_to @onsen.url, @onsen.url,  target: "_blank"%>
+        <div><%= @onsen.sales_s %> ～ <%= @onsen.sales_f %></div>
+        <div>定休日 : <%= @onsen.holiday %></div>
+        <div>営業状況：<%= @onsen.open_now %></div>
         <% if @onsen.tags.present? %>
           <div class="flex flex-wrap gap-2 mb-4">
             <% @onsen.tags.split(',').each do |tag| %>

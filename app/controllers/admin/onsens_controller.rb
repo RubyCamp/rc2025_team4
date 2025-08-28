@@ -76,4 +76,5 @@ class Admin::OnsensController < ApplicationController
   def onsen_params
     params.require(:onsen).permit(:name, :geo_lat, :geo_lng, :description, :tags, :url, :price, images: [], remove_image_ids: [])
   end
+
 end

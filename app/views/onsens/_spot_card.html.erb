@@ -16,6 +16,11 @@
         </div>
       <% end %>
 
+      <!-- mainより　 -->
+      <div><%= onsen.sales_s %> ～ <%= onsen.sales_f %></div>
+      <div>営業状況：<%= onsen.open_now %></div>
+    
+      <!-- isgikawa branch -->
       <% if onsen.price.present? %>
         <div class="mb-2">
           <span class="inline-block bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full">
@@ -23,6 +28,7 @@
           </span>
         </div>
       <% end %>
+
 
       <div class="flex items-center">
         <% if onsen.reviews.any? %>
