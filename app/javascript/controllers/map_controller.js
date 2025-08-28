@@ -56,37 +56,34 @@ export default class extends Controller {
     );
   }
 
-/**
- * 温泉データを地図にプロットする
- * @private
- */
-_plotOnsens() {
-  console.log("Plotting onsens. Data:", this.onsensValue);
-  this.onsenMarkers.clearLayers();
+  /**
+   * 温泉データを地図にプロットする
+   * @private
+   */
+  _plotOnsens() {
+    console.log("Plotting onsens. Data:", this.onsensValue);
+    this.onsenMarkers.clearLayers();
 
-  this.onsensValue.forEach(onsen => {
-    if (onsen.geo_lat && onsen.geo_lng) {
-      const onsenIcon = L.icon({
-        // status_icon があるならそれを使い、なければデフォルト画像
-        iconUrl: onsen.status_icon ? `/${onsen.status_icon}.svg` : '/onsen.png',
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
-      });
+    this.onsensValue.forEach(onsen => {
+      if (onsen.geo_lat && onsen.geo_lng) {
+        const onsenIcon = L.icon({
+          // status_icon があるならそれを使い、なければデフォルト画像
+          iconUrl: onsen.status_icon ? `/${onsen.status_icon}.svg` : '/onsen.png',
+          iconSize: [32, 32],
+          iconAnchor: [16, 32],
+        });
 
-      L.marker([onsen.geo_lat, onsen.geo_lng], { icon: onsenIcon })
-        .bindPopup(onsen.name)
-        .addTo(this.onsenMarkers);
-    } else {
-      console.warn("Onsen missing geo_lat or geo_lng:", onsen);
-    }
-  });
-
-  console.log("Onsens plotting complete.");
-}
-
+        L.marker([onsen.geo_lat, onsen.geo_lng], { icon: onsenIcon })
+          .bindPopup(onsen.name)
+          .addTo(this.onsenMarkers);
+      } else {
+        console.warn("Onsen missing geo_lat or geo_lng:", onsen);
+      }
     });
-    console.log("Onsens plotting complete."); // 追加
+
+    console.log("Onsens plotting complete.");
   }
+
 
   disconnect() {
     console.log("Map controller disconnected."); // 追加

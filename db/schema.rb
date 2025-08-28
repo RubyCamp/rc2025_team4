@@ -51,11 +51,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_27_110000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "url"
-    t.integer "price"
-    t.string "address"
     t.string "sales_s"
     t.string "sales_f"
     t.string "holiday"
+    t.string "address"
+    t.integer "price"
   end
 
   create_table "reviews", force: :cascade do |t|
