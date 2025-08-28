@@ -118,6 +118,10 @@ class Onsen < ApplicationRecord
   end
 
   def open_now
+    if sales_s.blank? || sales_f.blank?
+          return "営業時間不明"
+    end
+
     Time.zone = "Tokyo"
     now = Time.zone.now
     wday = %w[日 月 火 水 木 金 土][now.wday] # 現在の曜日を取得
