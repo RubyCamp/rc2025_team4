@@ -2,9 +2,14 @@
   <dt class="font-semibold">名称</dt>
   <dd><%= onsen.name %></dd>
 
-  <dt class="font-semibold">住所</dt>
-  <dd><%= onsen.address %></dd>           
-             
+  <dt class="font-semibold">住所(クリックしてGoogleマップで表示)</dt>
+  <dd>
+    <%= link_to onsen.address,
+      "https://www.google.com/maps/search/?api=1&query=#{ERB::Util.url_encode(onsen.address)}",
+      target: "_blank",
+      rel: "noopener noreferrer" %>
+  </dd>
+
   <dt class="font-semibold">緯度</dt>
   <dd><%= onsen.geo_lat %></dd>
   
@@ -12,7 +17,7 @@
   <dd><%= onsen.geo_lng %></dd>
 
   <dt class="font-semibold">URL</dt>
-  <dd><%= onsen.url %></dd>
+  <dd><%= link_to onsen.url, onsen.url, target: "_blank" %></dd>
   
   <dt class="font-semibold">始業時間</dt>
   <dd><%= onsen.sales_s %></dd>
