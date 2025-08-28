@@ -13,7 +13,14 @@ class OnsensController < ApplicationController
       bounds = @search_params[:bounds].split(",")
       @onsens = @onsens.within_bounds(bounds)
     end
+
+    # セッションリセット
+    reset_admin_session
   end
+
+
+
+
 
   # GET /onsens/1 or /onsens/1.json
   def show

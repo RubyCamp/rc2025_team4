@@ -3,6 +3,8 @@ class Admin::OnsensController < Admin::AdminController
 
   # GET /onsens
   def index
+    session[:admin] = nil
+
     @onsens = Onsen.all
   end
 

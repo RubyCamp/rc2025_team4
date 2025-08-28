@@ -1,22 +1,27 @@
+# app/controllers/admin/sessions_controller.rb
 class Admin::SessionsController < ApplicationController
-  # 管理画面用ログインページ（フォーム）
   def new
+    # パスワード入力フォーム
   end
 
-  # ログイン処理
   def create
     if params[:password] == ENV["ADMIN_PASSWORD"]
-      session[:admin_logged_in] = true
-      redirect_to admin_root_path, notice: "ログインしました"
+      session[:admin_authenticated] = true
+      redirect_to admin_root_path, notice: "ログイン成功"
     else
-      flash.now[:alert] = "パスワードが違います"
-      render :new, status: :unprocessable_entity
+      flash[:alert] = "パスワードが違います"
+      render :new
     end
   end
 
-  # ログアウト処理
   def destroy
-    reset_session
-    redirect_to admin_login_path, notice: "ログアウトしました"
+    session.delete(:admin_authenticated)
+    redirect_to root_path, notice: "ログアウトしました"
+  end
+
+
+  # セッションリセット
+  def reset_admin_session
+    session[:admin_authenticated] = nil
   end
 end
